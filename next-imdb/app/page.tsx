@@ -1,20 +1,10 @@
 // TOPページ (pages/ 以下のファイルをまとめるファイル) → このファイルを export することで、pages/ 以下のファイルが全て export される
-import { FC } from "react";
 import Results from "./components/Results";
 import type { TmdbMovie } from "../tmdb.types";
 
 const API_KEY = process.env.API_KEY;
 
-// Propsの型定義
-interface HomeProps { // NavbarItem.tsx で定義した Props(searchParams)が、Home.tsx に渡されている
-  searchParams: {
-    genre?: string;
-  };
-}
-
-const Home: FC<HomeProps> = async ({ searchParams }) => {
-  // searchParams: <NavbarItem/> で定義した searchParams(URLSearchParams オブジェクト) を受け取る
-
+export default async function Home({ searchParams }: { searchParams: { genre?: string }}) {  // クライアントコンポーネントでは useSearchParams(Hooks) でクエリパラメーター(?以降) を取得するが、サーバーコンポーネントでは searchParams で取得する
   /* URL のクエリパラメーター(?以降)を取得。 URL末尾に "?genre=○○○○" が届いたら "○○○○"部分を genre に格納。
     searchParams.genre が undefined なら、"fetchTrending" を格納 (|| は、左辺が false なら右辺を返す) → つまり、genre にはデフォルトで"fetchTrending"が入り、Navbarの 「Top Rated」 をクリックした時のみ "?genre=fetchTopRated" が届き "fetchTopRated" が genre に入る */
   const genre = searchParams.genre || "fetchTrending";
@@ -38,9 +28,7 @@ const Home: FC<HomeProps> = async ({ searchParams }) => {
 
   return (
     <div>
-      <Results results={results} /> {/* 配列の results を Resultsコンポーネントで map で表示 */} 
+      <Results results={results} /> {/* 配列の results を Resultsコンポーネントで map で表示 */}
     </div>
   )
 }
-
-export default Home;

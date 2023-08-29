@@ -3,7 +3,6 @@
 import { FC, useState, FormEvent } from 'react'
 import { useRouter } from 'next/navigation'
 
-// type Props = {}
 
 const SearchBox:FC = () => {
   const [search, setSearch] = useState<string>("");
